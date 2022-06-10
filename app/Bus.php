@@ -10,4 +10,9 @@ class Bus extends Model
         'color', 'name', 'photo','status',
     ];
 
+    public function coordinates()
+    {
+        return  $this->hasMany('App\Coordinate');
+    }
+
 }

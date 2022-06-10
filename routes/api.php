@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\CoordinateController;
+use \App\Http\Controllers\BusController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix'=> 'bus'], function () {
+    Route::get('index', [BusController::class, 'index']);
+    Route::get('show/{id}', [BusController::class, 'show']);
+});
+
+Route::group(['prefix'=> 'coordinate'], function () {
+    Route::get('show/{id}/{comingback}', [CoordinateController::class, 'show']);
 });
