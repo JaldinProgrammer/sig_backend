@@ -15,8 +15,14 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->boolean('admin')->default(false); // field that manage if the user is admin
+            $table->date('birthday')->nullable();
+            $table->string('ci')->nullable();
             $table->string('email')->unique();
+            $table->boolean('gender')->default(true); // man == true , woman == true
+            $table->string('name');
+            $table->string('phone')->nullable();
+            $table->foreignId('license_category_id')->constrained('license_categories');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

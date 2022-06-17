@@ -4,20 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Bus extends Model
+class CarModel extends Model
 {
     protected $fillable = [
-        'color', 'name', 'photo','status',
+        'model','status',
     ];
-
-    public function coordinates()
-    {
-        return  $this->hasMany('App\Coordinate');
-    }
-
     public function vehicles()
     {
         return  $this->hasMany('App\Vehicle');
     }
-
 }

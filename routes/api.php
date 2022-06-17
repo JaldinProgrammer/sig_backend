@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\CoordinateController;
@@ -19,9 +20,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['prefix'=> 'auth'], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('admin', [AuthController::class, 'adminLogin']);
+});
+
 Route::group(['prefix'=> 'bus'], function () {
     Route::get('index', [BusController::class, 'index']);
     Route::get('show/{id}', [BusController::class, 'show']);
+    Route::get('all', [BusController::class, 'busesWithTheyPaths']);
 });
 
 Route::group(['prefix'=> 'coordinate'], function () {

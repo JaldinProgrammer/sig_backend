@@ -16,8 +16,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'admin', 'birthday', 'ci','email','gender','name','phone','license_category_id','password',
     ];
+
+    public function license()
+    {
+        return  $this->belongsTo('App\LicenseCategory');
+    }
+
+    public function drivers()
+    {
+        return  $this->hasMany('App\Driver');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
