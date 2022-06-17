@@ -28,6 +28,7 @@ Route::group(['prefix'=> 'auth'], function () {
 Route::group(['prefix'=> 'bus'], function () {
     Route::get('index', [BusController::class, 'index']);
     Route::get('show/{id}', [BusController::class, 'show']);
+    Route::get('all', [BusController::class, 'busesWithTheyPaths']);
 });
 
 Route::group(['prefix'=> 'coordinate'], function () {
