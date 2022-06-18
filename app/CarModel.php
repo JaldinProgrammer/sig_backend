@@ -11,6 +11,6 @@ class CarModel extends Model
     ];
     public function vehicles()
     {
-        return  $this->hasMany('App\Vehicle');
+        return  $this->hasMany('App\Vehicle','car_model_id');
     }
 }

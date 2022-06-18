@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->boolean('gender')->default(true); // man == true , woman == true
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->foreignId('license_category_id')->constrained('license_categories');
+            $table->foreignId('license_category_id')->constrained('license_categories')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
