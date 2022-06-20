@@ -273,7 +273,7 @@ return [
         ],
         [
             'text' => 'Choferes',
-            'url'  => 'categorias',
+            'url'  => 'choferes',
             'icon' => 'fas fa-users',
         ],
        /*  [

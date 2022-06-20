@@ -65,7 +65,7 @@
                     <td>{{$vehiculo->bus->name}}</td>
                     <td>{{$vehiculo->model->model}}</td>
 
-                    <td >
+                    <td>
                         <a class="btn btn-info btn-sm" wire:click="modalEdit('{{$vehiculo->id}}')">Ver o Editar</a> 
                           <button wire:click="modalDestroy('{{$vehiculo->id}}')" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>    
@@ -95,54 +95,59 @@
         <div class="modald-contenido">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                  <form wire:submit.prevent="store" enctype="multipart/form-data">
                     <div class="modal-header">
                         <h4 class="modal-title" id="exampleModalLabel">Registrar vehiculo</h4>
                     </div>
                     <div class="modal-body">
                         <h5>Contacto:</h5>
-                        <input type="text" wire:model="vehiculo.contact" class="form-control">
+                        <input type="text" wire:model="vehiculo.contact" name="contact" class="form-control">
                         @error('vehiculo.contact')
                           <small class="text-danger">Campo Requerido</small>
                         @enderror
 
                         <h5>Placa:</h5>
-                        <input type="text" wire:model="vehiculo.plate" class="form-control">
+                        <input type="text" wire:model="vehiculo.plate" name="contact" class="form-control">
                         @error('vehiculo.plate')
                           <small class="text-danger">Campo Requerido</small>
                         @enderror
 
                         <h5>Asientos:</h5>
-                        <input type="text" wire:model="vehiculo.seats" class="form-control">
+                        <input type="text" wire:model="vehiculo.seats" name="seats"  class="form-control">
                         @error('vehiculo.seats')
                           <small class="text-danger">Campo Requerido</small>
                         @enderror
 
                         <h5>Linea:</h5>
-                        <select wire:model='vehiculo.bus_id' name="clientes_lenght" aria-controls="clientes" class="form-select form-select-sm">
+                        <select wire:model='vehiculo.bus_id' name="bus_id" aria-controls="clientes" class="form-select form-select-sm">
                             <option value="">Seleccione una linea</option>
                             @foreach ($lineas as $linea)
                                 <option value="{{$linea->id}}">{{$linea->name}}</option>
                             @endforeach
                         </select>
                         @error('vehiculo.bus_id')
-                        <small class="text-danger">Campo Requerido</small>
+                          <small class="text-danger">Campo Requerido</small>
                         @enderror
 
                         <h5>Modelo:</h5>
-                        <select wire:model='vehiculo.car_model_id' name="clientes_lenght" aria-controls="clientes" class="form-select form-select-sm">
+                        <select wire:model='vehiculo.car_model_id' name="car_model_id" aria-controls="clientes" class="form-select form-select-sm">
                             <option value="">Seleccione un modelo</option>
                             @foreach ($modelos as $modelo)
                                 <option value="{{$modelo->id}}">{{$modelo->model}}</option>
                             @endforeach
                         </select>
                         @error('vehiculo.car_model_id')
-                        <small class="text-danger">Campo Requerido</small>
+                          <small class="text-danger">Campo Requerido</small>
                         @enderror
+
+                        <h5>Imagen:</h5>
+                        <input type="file"  wire:model='file' name="file" id="url" accept="image/*" class="form-control" >
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="cancelar()">Cancelar</button>
-                        <button type="button" class="btn btn-primary" wire:click="store()">Guardar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar</button>
                     </div>
+                  </form>
                 </div>
             </div>
         </div>
@@ -179,6 +184,7 @@
         <div class="modald-contenido">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
+            <form wire:submit.prevent="update" enctype="multipart/form-data">
             <div class="modal-header">
               <h4 class="modal-title" id="exampleModalLabel">Editar Vehiculo</h4>
             </div>
@@ -218,13 +224,21 @@
                     @endforeach
                 </select>
                 @error('vehiculo.car_model_id')
-                <small class="text-danger">Campo Requerido</small>
+                  <small class="text-danger">Campo Requerido</small>
                 @enderror
+                <div class="row d-flex justify-content-center">
+                  <img src="{{asset($this->vehiculo['photo'])}}" alt="" width="20%" height="20%">
+                </div>
+
+                <h5>Cambiar imagen:</h5>
+                <input type="file"  wire:model='file' name="file" id="url" accept="image/*" class="form-control" >
+                    
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" wire:click="cancelar()">Cancelar</button>
-              <button type="button" class="btn btn-primary" wire:click="update()">Actualizar</button>
+              <button type="submit" class="btn btn-primary" wire:click="update()">Actualizar</button>
             </div>
+          </form>
           </div>
         </div>
       </div> 

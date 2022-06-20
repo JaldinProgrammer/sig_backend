@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CarModelController;
 use App\Http\Controllers\LicenseCategoryController;
 use App\Http\Controllers\VehicleController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,4 +29,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('modelos',[CarModelController::class,'index'])->name('modelos.index');
 Route::get('licencias',[LicenseCategoryController::class,'index'])->name('licencias.index');
 Route::get('vehiculos',[VehicleController::class,'index'])->name('vehiculos.index');
+Route::get('choferes',[UserController::class,'index'])->name('users.index');
 

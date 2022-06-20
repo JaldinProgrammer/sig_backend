@@ -21,7 +21,7 @@ class User extends Authenticatable
 
     public function license()
     {
-        return  $this->belongsTo('App\LicenseCategory');
+        return  $this->belongsTo('App\LicenseCategory','license_category_id');
     }
 
     public function drivers()

@@ -7,12 +7,14 @@ use App\Vehicle;
 use App\Bus;
 use App\CarModel;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Vehiculos extends Component
 {
     
-    use WithPagination;
-
+    use WithPagination,WithFileUploads;
+    public $file;
     public $search = "";
     public $cant = 10;
     public $vehiculo=[];
@@ -42,7 +44,10 @@ class Vehiculos extends Component
             'vehiculo.seats'=>'required',
             'vehiculo.bus_id'=>'required',
             'vehiculo.car_model_id'=>'required',
-        ]);
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+        $imagenes = $this->file->store('files', 'public');
+        $this->vehiculo['photo'] =Storage::url($imagenes);
         Vehicle::create($this->vehiculo);
         $this->limpiar();
     }
@@ -66,6 +71,15 @@ class Vehiculos extends Component
             'vehiculo.car_model_id'=>'required',
         ]);
         $vehiculo=Vehicle::find($this->vehiculo['id']);
+        if ($this->file!==null){
+            $ruta = "public".$vehiculo->photo;
+            if (file_exists("../".$ruta)){
+                unlink("../".$ruta);
+            }
+            $imagenes = $this->file->store('files', 'public');
+            $vehiculo->photo =Storage::url($imagenes);
+        }
+        
         $vehiculo->contact=$this->vehiculo['contact'];
         $vehiculo->plate=$this->vehiculo['plate'];
         $vehiculo->seats=$this->vehiculo['seats'];
@@ -80,6 +94,7 @@ class Vehiculos extends Component
         $this->modalEdit=false;
         $this->modalDestroy=false;
         $this->modalCrear=false;
+        $this->file=null;
     }
 
     public function cancelar(){
@@ -88,6 +103,10 @@ class Vehiculos extends Component
     public function destroy()
     {
         $vehiculo=Vehicle::find($this->vehiculo['id']);
+        $ruta = "public".$vehiculo->photo;
+            if (file_exists("../".$ruta)){
+                unlink("../".$ruta);
+            }
         $vehiculo->delete();
         $this->modalDestroy=false;
     }

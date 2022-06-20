@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\CoordinateController;
 use \App\Http\Controllers\BusController;
+use \App\Http\Controllers\VehicleController;
+use \App\Http\Controllers\DriverController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,4 +35,15 @@ Route::group(['prefix'=> 'bus'], function () {
 
 Route::group(['prefix'=> 'coordinate'], function () {
     Route::get('show/{id}/{comingback}', [CoordinateController::class, 'show']);
+});
+
+
+Route::group(['prefix'=> 'vehicles'], function () {
+    Route::get('show/{id}', [VehicleController::class, 'show']);
+    Route::get('all', [VehicleController::class, 'all']);
+});
+
+Route::group(['prefix'=> 'drivers'], function () {
+    Route::get('ocupar-vehiculo/{user}/{vehicle}', [DriverController::class, 'ocupar']);
+    Route::get('liberar-vehiculo/{user}/{vehicle}', [DriverController::class, 'liberar']);
 });
