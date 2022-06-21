@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Driver;
+use App\Driver;
 
-use app\Vehicle;
+use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
-use app\User;
+use App\User;
 class DriverController extends Controller
 {
     public function ocupar($user,$vehicle){
