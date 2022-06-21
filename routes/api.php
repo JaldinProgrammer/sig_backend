@@ -40,6 +40,7 @@ Route::group(['prefix'=> 'coordinate'], function () {
 
 Route::group(['prefix'=> 'vehicles'], function () {
     Route::get('show/{id}', [VehicleController::class, 'show']);
+    Route::get('vehiculos-user/{id}', [VehicleController::class, 'vehiculosuser']);
     Route::get('all', [VehicleController::class, 'all']);
 });
 
