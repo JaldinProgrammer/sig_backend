@@ -26,7 +26,7 @@ class DriverController extends Controller
         }else{
             return response()->json(['error' => "no se encontro el usuario o vehiculo"], Response::HTTP_BAD_REQUEST);
         }
-       
+        
     }
     public function liberar($user,$vehicle){
         $usuario=User::find($user);
