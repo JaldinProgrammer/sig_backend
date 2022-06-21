@@ -12,7 +12,7 @@ class LicenseCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('license_Categories')->insert([
+        DB::table('license_categories')->insert([
             [
                 'license' => 'A',
             ],
