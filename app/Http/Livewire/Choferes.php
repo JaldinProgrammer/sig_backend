@@ -8,6 +8,10 @@ use App\User;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
+use App\Vehicle;
+use App\Driver;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Choferes extends Component
 {
@@ -21,6 +25,10 @@ class Choferes extends Component
     public $modalDestroy=false;
     public $modalEdit=false;
     public $modalCrear=false;
+    public $modalVehiculo=false;
+    public $vehiculo_id;
+    public $vehiculos;
+    public $novehiculos;
 
     public function render()
     {
@@ -28,6 +36,8 @@ class Choferes extends Component
             ->orderBy('id', $this->ordenar)
             ->simplePaginate($this->cant);
         $licencias=LicenseCategory::all();
+
+        
         return view('livewire.choferes',compact('users','licencias'));
     }
     public function crear(){
@@ -64,8 +74,33 @@ class Choferes extends Component
         $this->user_id=$id;
         $this->user=User::find($id)->toArray();
     }
-
-    public function update(){
+    public function modalVehiculo($id){
+        $this->modalVehiculo=true;
+        $this->user_id=$id;
+        $this->novehiculos=Vehicle::whereNotIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+        $this->vehiculos=Vehicle::whereIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+    }
+    public function storeDrive(){
+        Driver::create([
+            'inDate' =>Carbon::today()->format('Y-m-d'),
+            'outDate' =>Carbon::today()->format('Y-m-d'),
+            'taken' =>0,
+            'status' =>1,
+            'user_id' =>$this->user_id,
+            'vehicle_id' =>$this->vehiculo_id,
+        ]);
+        $this->novehiculos=Vehicle::whereNotIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+        $this->vehiculos=Vehicle::whereIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+    }
+    public function eliminarDrive($vehiculo_id){
+        $driver = Driver::where('vehicle_id',$vehiculo_id)
+                ->where('user_id',$this->user_id)
+                ->get()->first();
+        $driver->delete();
+        $this->novehiculos=Vehicle::whereNotIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+        $this->vehiculos=Vehicle::whereIn('id',Driver::select('vehicle_id')->where('user_id',$this->user_id))->get();
+    }
+        public function update(){
         $this->validate([
             'user.ci'=>'required',
             'user.email'=>'required',
@@ -93,6 +128,7 @@ class Choferes extends Component
         $this->modalEdit=false;
         $this->modalDestroy=false;
         $this->modalCrear=false;
+        $this->modalVehiculo=false;
         $this->file=null;
     }
 

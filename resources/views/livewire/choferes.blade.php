@@ -50,7 +50,7 @@
                   <th scope="col">nombre</th>
                   <th scope="col">telefono</th>
                   <th scope="col">cat. licencia</th>
-                  <th scope="col" width="20%">Acciones</th>
+                  <th scope="col" width="25%">Acciones</th>
                 </tr>
               </thead>
               
@@ -66,6 +66,7 @@
                     <td>{{$user->license->license}}</td>
                     <td >
                         <a class="btn btn-info btn-sm" wire:click="modalEdit('{{$user->id}}')">Ver o Editar</a> 
+                        <a class="btn btn-primary btn-sm" wire:click="modalVehiculo('{{$user->id}}')">Vehiculos</a> 
                           <button wire:click="modalDestroy('{{$user->id}}')" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>    
                   </tr>
@@ -260,6 +261,54 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" wire:click="cancelar()">Cancelar</button>
               <button type="submit" class="btn btn-primary" wire:click="update()">Actualizar</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div> 
+      </div>  
+      @endif
+
+      @if ($modalVehiculo)
+      <div class="modald">
+        <div class="modald-contenido">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form wire:submit.prevent="update" enctype="multipart/form-data">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel"><b>Agregar Vehiculo</b></h4>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center text-center justify-content-center">
+                    <h5 class="mx-2">Buscar por placa:</h5>
+                    <select wire:model="vehiculo_id" aria-controls="clientes" class="form-select form-select-sm mx-2">
+                        <option value="">Seleccione un vehiculo</option>
+                        @foreach ($novehiculos as $novehiculo)
+                            <option value="{{$novehiculo->id}}">{{$novehiculo->plate}}</option>
+                        @endforeach
+                    </select>
+                    @error('vehiculo_id')
+                      <small class="text-danger">Campo Requerido</small>
+                    @enderror
+                    <button type="submit" class="btn btn-success btn-sm mx-2" wire:click="storeDrive()">Agregar</button>
+                </div>
+                <div class="my-2">
+                  <h5><b>Ya ocupados:</b></h5>
+                  <div class="" style="height:100px; overflow-y:auto;">
+                      @foreach ($vehiculos as $vehiculo)
+                        <div class="d-flex align-items-center text-center justify-content-center">
+                            <h5>{{$vehiculo->plate}}</h5>
+                            <button type="submit" class="btn btn-outline-danger btn-sm" style="border:none;"wire:click="eliminarDrive('{{$vehiculo->id}}')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                            </svg></button>
+                        </div>
+                      @endforeach
+                  </div>
+                 
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" wire:click="cancelar()">Salir</button>
             </div>
           </form>
           </div>

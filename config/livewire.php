@@ -54,7 +54,8 @@ return [
     |
     */
 
-    'asset_url' => "https://supportficct.ga/sig_backend/public",
+    //'asset_url' => "https://supportficct.ga/sig_backend/public",
+    'asset_url' => null,
 
     /*
     |--------------------------------------------------------------------------
