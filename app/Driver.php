@@ -19,4 +19,9 @@ class Driver extends Model
     {
         return  $this->belongsTo('App\Vehicle');
     }
+
+    public function session()
+    {
+        return  $this->hasMany('App\Session');
+    }
 }

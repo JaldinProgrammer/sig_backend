@@ -26,8 +26,8 @@ class DriverController extends Controller
         }else{
             return response()->json(['error' => "no se encontro el usuario o vehiculo"], Response::HTTP_BAD_REQUEST);
         }
-
     }
+
     public function liberar($user,$vehicle){
         $usuario=User::find($user);
         $micro=Vehicle::find($vehicle);
@@ -40,6 +40,22 @@ class DriverController extends Controller
             return response()->json($data, Response::HTTP_OK);
         }else{
             return response()->json(['error' => "no se encontro el usuario o vehiculo"], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function setPosition(Request $request,$user,$vehicle){
+        $driver = Driver::where('user_id', $user)->where('vehicle_id', $vehicle)->first();
+        if ($driver){
+            $credentials =   Request()->validate([
+                'currentLat' => ['required'],
+                'currentLong' => ['required'],
+            ]);
+            $driver->currentLat = $request->get('currentLat');
+            $driver->currentLong = $request->get('currentLong');
+            $driver->update();
+            return response()->json($driver, Response::HTTP_OK);
+        }else{
+            return response()->json(['error' => "no se pudo settear la posicion"], Response::HTTP_BAD_REQUEST);
         }
     }
 }

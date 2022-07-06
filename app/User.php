@@ -16,12 +16,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'admin', 'birthday', 'ci','email','gender','name','phone','license_category_id','password',
+        'admin', 'birthday', 'ci','email','gender','name','phone','license_category_id','password','bus_id',
     ];
 
     public function license()
     {
         return  $this->belongsTo('App\LicenseCategory','license_category_id');
+    }
+
+    public function bus()
+    {
+        return  $this->belongsTo('App\Bus','bus_id');
     }
 
     public function drivers()

@@ -20,4 +20,9 @@ class Bus extends Model
         return  $this->hasMany('App\Vehicle');
     }
 
+    public function users()
+    {
+        return  $this->hasMany('App\User');
+    }
+
 }

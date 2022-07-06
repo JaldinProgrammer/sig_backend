@@ -22,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->boolean('gender')->default(true); // man == true , woman == true
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->foreignId('license_category_id')->constrained('license_categories')->nullable();
+            $table->foreignId('license_category_id')->nullable()->constrained('license_categories');
+            $table->foreignId('bus_id')->nullable()->constrained('buses');// admins will have a fk bus_id that shows what bus the admin manage
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
