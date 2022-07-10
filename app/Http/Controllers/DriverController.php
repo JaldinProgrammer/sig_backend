@@ -17,10 +17,11 @@ class DriverController extends Controller
         if ($usuario && $micro){
             $data=Driver::create([
                 'inDate'=>Carbon::today()->format('Y-m-d'),
+                'outDate'=>Carbon::today()->format('Y-m-d'),
                 'taken' =>1,
                 'status' =>1,
                 'user_id'=>$user,
-                'vehicle' =>$vehicle
+                'vehicle_id' =>$vehicle
             ]);
             return response()->json($data, Response::HTTP_OK);
         }else{
