@@ -19,6 +19,8 @@ class CreateDriversTable extends Migration
             $table->date('outDate');
             $table->boolean('taken')->default(false);
             $table->boolean('status')->default(true);
+            $table->String('currentLat')->nullable();
+            $table->String('currentLong')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('vehicle_id')->constrained('vehicles');
             $table->timestamps();

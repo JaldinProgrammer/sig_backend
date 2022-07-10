@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\CoordinateController;
@@ -47,4 +48,11 @@ Route::group(['prefix'=> 'vehicles'], function () {
 Route::group(['prefix'=> 'drivers'], function () {
     Route::get('ocupar-vehiculo/{user}/{vehicle}', [DriverController::class, 'ocupar']);
     Route::get('liberar-vehiculo/{user}/{vehicle}', [DriverController::class, 'liberar']);
+    Route::get('nearbuses/{bus}/{lat}/{long}', [DriverController::class, 'getBussesAround']);
+    Route::put('setLatLong/{user}/{vehicle}', [DriverController::class, 'setPosition']);
+});
+
+Route::group(['prefix'=> 'sessions'], function () {
+    Route::post('/write', [SessionController::class, 'create']);
+
 });
