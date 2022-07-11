@@ -102,8 +102,8 @@
                     <div class="modal-body">
                         <h5>Rol:</h5>
                         <select wire:model="user.admin" aria-controls="clientes" class="form-select form-select-sm">
-                            <option value="1">Administrador</option>
-                            <option value="0">Chofer</option>
+                          <option value="0">Chofer</option>
+                          <option value="1">Administrador</option>
                         </select>
 
                         <h5>CI:</h5>
@@ -153,6 +153,17 @@
                             @endforeach
                         </select>
                         @error('user.license_category_id')
+                          <small class="text-danger">Campo Requerido</small>
+                        @enderror
+
+                        <h5>Linea:</h5>
+                        <select wire:model="user.bus_id" aria-controls="clientes" class="form-select form-select-sm">
+                            <option value="">Seleccione un modelo</option>
+                            @foreach ($buses as $bus)
+                                <option value="{{$bus->id}}">{{$bus->name}}</option>
+                            @endforeach
+                        </select>
+                        @error('user.bus_id')
                           <small class="text-danger">Campo Requerido</small>
                         @enderror
                     </div>
@@ -255,6 +266,17 @@
                             @endforeach
                         </select>
                         @error('user.license_category_id')
+                          <small class="text-danger">Campo Requerido</small>
+                        @enderror
+
+                        <h5>Linea:</h5>
+                        <select wire:model="user.bus_id" aria-controls="clientes" class="form-select form-select-sm">
+                            <option value="">Seleccione un modelo</option>
+                            @foreach ($buses as $bus)
+                                <option value="{{$bus->id}}">{{$bus->name}}</option>
+                            @endforeach
+                        </select>
+                        @error('user.bus_id')
                           <small class="text-danger">Campo Requerido</small>
                         @enderror
             </div>

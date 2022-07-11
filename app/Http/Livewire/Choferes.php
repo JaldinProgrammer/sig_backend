@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\LicenseCategory;
 use App\User;
+use App\Bus;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
@@ -36,11 +37,13 @@ class Choferes extends Component
             ->orderBy('id', $this->ordenar)
             ->simplePaginate($this->cant);
         $licencias=LicenseCategory::all();
-
+        $buses=Bus::all();
         
-        return view('livewire.choferes',compact('users','licencias'));
+        return view('livewire.choferes',compact('users','licencias','buses'));
     }
     public function crear(){
+        $this->user['gender']=1;
+        $this->user['admin']=0;
         $this->modalCrear=true;
     }
     public function store()
@@ -50,6 +53,7 @@ class Choferes extends Component
             'user.email'=>'required',
             'user.name'=>'required',
             'user.license_category_id'=>'required',
+            'user.gender'=>'required',
             'user.password'=>'required',
             ]);
         User::create([
@@ -60,6 +64,7 @@ class Choferes extends Component
             'name'=>$this->user['name'],
             'phone'=>$this->user['phone'],
             'license_category_id'=>$this->user['license_category_id'],
+            'bus_id'=>$this->user['bus_id'],
             'password'=>Hash::make($this->user['password']),
         ]);
         $this->limpiar();
@@ -118,6 +123,7 @@ class Choferes extends Component
         $user->name=$this->user['name'];
         $user->phone=$this->user['phone'];
         $user->license_category_id=$this->user['license_category_id'];
+        $user->bus_id=$this->user['bus_id'];
         $user->password=Hash::make($this->user['password']);
         $user->save();
         $this->limpiar();
