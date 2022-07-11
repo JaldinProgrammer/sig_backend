@@ -30,16 +30,20 @@ class DriverController extends Controller
         if ($usuario && $vehiculo){
             $driver= Driver::where('user_id', $usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
             if ($driver){
-                $driver->update([
-                    'inDate' =>Carbon::today()->format('Y-m-d'),
-                    'taken' =>true
-                ]);
-                Session::create([
-                    'date' => Carbon::today(),
-                    'isLogin'=> true,
-                    'driver_id' => $driver->id
-                ]);
-                return response()->json($driver, Response::HTTP_OK);
+                if (!$driver->taken){
+                    $driver->update([
+                        'inDate' =>Carbon::today()->format('Y-m-d'),
+                        'taken' =>true
+                    ]);
+                    Session::create([
+                        'date' => Carbon::today(),
+                        'isLogin'=> true,
+                        'driver_id' => $driver->id
+                    ]);
+                    return response()->json($driver, Response::HTTP_OK);
+                }else{
+                    return response()->json(['error' => "El Vehiculo Esta Ocupado"], Response::HTTP_BAD_REQUEST);
+                }
             }
             return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
         }else{
@@ -64,18 +68,23 @@ class DriverController extends Controller
         $vehiculo=Vehicle::find($request->vehicle_id);
         if ($usuario && $vehiculo){
             $driver=Driver::where('user_id',$usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
+
             if ($driver){
-                $driver->update([
-                    'outDate'=>Carbon::today()->format('Y-m-d'),
-                    'taken' =>0,
-                ]);
-                Session::create([
-                    'date' => Carbon::today(),
-                    'isLogin'=>false,
-                    'message'=> $request['message'],
-                    'driver_id' => $driver->id
-                ]);
-                return response()->json($driver, Response::HTTP_OK);
+                if ($driver->taken){
+                    $driver->update([
+                        'outDate'=>Carbon::today()->format('Y-m-d'),
+                        'taken' =>0,
+                    ]);
+                    Session::create([
+                        'date' => Carbon::today(),
+                        'isLogin'=>false,
+                        'message'=> $request['message'],
+                        'driver_id' => $driver->id
+                    ]);
+                    return response()->json($driver, Response::HTTP_OK);
+                }else{
+                    return response()->json(['error' => "El Vehiculo esta libre"], Response::HTTP_BAD_REQUEST);
+                }
             }
             return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
         }else{
