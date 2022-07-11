@@ -5,42 +5,67 @@ namespace App\Http\Controllers;
 use App\Coordinate;
 use Illuminate\Http\Request;
 use App\Driver;
-
+use Illuminate\Support\Facades\Validator;
 use App\Vehicle;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use App\User;
 class DriverController extends Controller
 {
-    public function ocupar($user,$vehicle){
-        $usuario=User::where('id',$user)->get()->first();
-        $micro=Vehicle::find($vehicle);
-        if ($usuario && $micro){
-            $data=Driver::create([
-                'inDate'=>Carbon::today()->format('Y-m-d'),
-                'outDate'=>Carbon::today()->format('Y-m-d'),
-                'taken' =>1,
-                'status' =>1,
-                'user_id'=>$user,
-                'vehicle_id' =>$vehicle
-            ]);
-            return response()->json($data, Response::HTTP_OK);
+    public function ocupar(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'vehicle_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' =>"Faltan Parametros",
+                    'Errors'=>$validator->errors()->all()
+                ],Response::HTTP_BAD_REQUEST);
+        }
+        $usuario=User::find($request->user_id);
+        $vehiculo=Vehicle::find($request->vehicle_id);
+        if ($usuario && $vehiculo){
+            $driver= Driver::where('user_id', $usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
+            if ($driver){
+                $driver->update([
+                    'inDate' =>Carbon::today()->format('Y-m-d'),
+                    'taken' =>true
+                ]);
+                return response()->json($driver, Response::HTTP_OK);
+            }
+            return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
         }else{
             return response()->json(['error' => "no se encontro el usuario o vehiculo"], Response::HTTP_BAD_REQUEST);
         }
         
     }
 
-    public function liberar($user,$vehicle){
-        $usuario=User::find($user);
-        $micro=Vehicle::find($vehicle);
-        if ($usuario && $micro){
-            $data=Driver::where('user_id',$user)->where('vehicle_id',$vehicle)->get()->first();
-            $data->update([
-                'outDate'=>Carbon::today()->format('Y-m-d'),
-                'taken' =>0,
-            ]);
-            return response()->json($data, Response::HTTP_OK);
+    public function liberar(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'vehicle_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' =>"Faltan Parametros",
+                    'Errors'=>$validator->errors()->all()
+                ],Response::HTTP_BAD_REQUEST);
+        }
+        $usuario=User::find($request->user_id);
+        $vehiculo=Vehicle::find($request->vehicle_id);
+        if ($usuario && $vehiculo){
+            $data=Driver::where('user_id',$usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
+            if ($data){
+                $data->update([
+                    'outDate'=>Carbon::today()->format('Y-m-d'),
+                    'taken' =>0,
+                ]);
+                return response()->json($data, Response::HTTP_OK);
+            }
+            return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
         }else{
             return response()->json(['error' => "no se encontro el usuario o vehiculo"], Response::HTTP_BAD_REQUEST);
         }

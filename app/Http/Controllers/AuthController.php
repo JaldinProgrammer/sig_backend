@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Driver;
 use App\User;
 use App\Vehicle;
+use App\Bus;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,8 +38,9 @@ class AuthController extends Controller
             if (Hash::check($request->password, $loUser->password)){
                 $loResponseArr['message'] = '¡El usuario se ha loggeado correctamente!';
                 //$loResponseArr['token'] = $loUser->createToken('myapptoken')->plainTextToken;
-                $loResponseArr['data'] = $loUser;
-                $loResponseArr['buses'] = $buses;
+                $loResponseArr['user'] = $loUser;
+                $loResponseArr['Bus'] = Bus::where('id', $loUser->bus_id)->first();
+                $loResponseArr['vehiculos'] =Vehicle::whereIn('id',Driver::select('vehicle_id')->where('user_id',$loUser->id)->where('taken',false))->get();
                 return response()->json($loResponseArr,Response::HTTP_OK);
             }
             else{

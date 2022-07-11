@@ -46,8 +46,8 @@ Route::group(['prefix'=> 'vehicles'], function () {
 });
 
 Route::group(['prefix'=> 'drivers'], function () {
-    Route::get('ocupar-vehiculo/{user}/{vehicle}', [DriverController::class, 'ocupar']);
-    Route::get('liberar-vehiculo/{user}/{vehicle}', [DriverController::class, 'liberar']);
+    Route::put('ocupar-vehiculo',[DriverController::class, 'ocupar']);
+    Route::put('liberar-vehiculo',[DriverController::class, 'liberar']);
     Route::get('nearbuses/{bus}/{lat}/{long}', [DriverController::class, 'getBussesAround']);
     Route::put('setLatLong/{user}/{vehicle}', [DriverController::class, 'setPosition']);
 });
