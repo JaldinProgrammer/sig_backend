@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Coordinate;
 use Illuminate\Http\Request;
 use App\Driver;
+use App\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Vehicle;
 use Carbon\Carbon;
@@ -33,6 +34,11 @@ class DriverController extends Controller
                     'inDate' =>Carbon::today()->format('Y-m-d'),
                     'taken' =>true
                 ]);
+                Session::create([
+                    'date' => Carbon::today(),
+                    'isLogin'=> true,
+                    'driver_id' => $driver->id
+                ]);
                 return response()->json($driver, Response::HTTP_OK);
             }
             return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
@@ -57,13 +63,19 @@ class DriverController extends Controller
         $usuario=User::find($request->user_id);
         $vehiculo=Vehicle::find($request->vehicle_id);
         if ($usuario && $vehiculo){
-            $data=Driver::where('user_id',$usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
-            if ($data){
-                $data->update([
+            $driver=Driver::where('user_id',$usuario->id)->where('vehicle_id',$vehiculo->id)->get()->first();
+            if ($driver){
+                $driver->update([
                     'outDate'=>Carbon::today()->format('Y-m-d'),
                     'taken' =>0,
                 ]);
-                return response()->json($data, Response::HTTP_OK);
+                Session::create([
+                    'date' => Carbon::today(),
+                    'isLogin'=>false,
+                    'message'=> $request['message'],
+                    'driver_id' => $driver->id
+                ]);
+                return response()->json($driver, Response::HTTP_OK);
             }
             return response()->json(['error' => "Estos datos no estan relacionados"], Response::HTTP_BAD_REQUEST);
         }else{

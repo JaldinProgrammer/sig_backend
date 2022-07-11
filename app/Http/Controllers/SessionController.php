@@ -20,6 +20,7 @@ class SessionController extends Controller
             ]);
             $driver = Driver::where('user_id',$request['user_id'])->where('vehicle_id',$request['vehicle_id'])->first();
             if ($driver){
+                $driver->update(['taken'=>false]);
                 $session = Session::create([
                     'date' => $request['date'],
                     'isLogin'=> $request['isLogin'],

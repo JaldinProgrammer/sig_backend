@@ -54,5 +54,4 @@ Route::group(['prefix'=> 'drivers'], function () {
 
 Route::group(['prefix'=> 'sessions'], function () {
     Route::post('/write', [SessionController::class, 'create']);
-
 });
