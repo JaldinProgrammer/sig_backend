@@ -37,5 +37,9 @@ class SessionController extends Controller
         }
 
     }
+    public function session(){
+        $sesions=Session::all();
+        return view('session.index',compact('sesions'));
+    }
 
 }

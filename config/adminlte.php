@@ -264,17 +264,21 @@ return [
         [
             'text' => 'Vehiculos',
             'url'  => 'vehiculos',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-car',
         ],
         [
             'text' => 'Licencias',
             'url'  => 'licencias',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-car',
         ],
         [
             'text' => 'Choferes',
             'url'  => 'choferes',
             'icon' => 'fas fa-users',
+        ],
+        [
+            'text' => 'Bitacora',
+            'url'  => 'sessions',
         ],
        /*  [
             'text' => 'SKU',
